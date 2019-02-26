@@ -2,7 +2,7 @@
 
 This example shows how to add ***Login/SignUp*** to your application using the hosted version of the `Lock` widget.
 
-You can read a quickstart for this sample [here](https://auth0.com/docs/quickstart/webapp/aspnet-core/01-login). 
+You can read a quickstart for this sample [here](https://auth0.com/docs/quickstart/webapp/aspnet-core/01-login).
 
 ## Getting Started
 
@@ -16,8 +16,8 @@ Be sure to update the `appsettings.json` with your Auth0 settings:
     "Domain": "Your Auth0 domain",
     "ClientId": "Your Auth0 Client Id",
     "ClientSecret": "Your Auth0 Client Secret",
-    "CallbackUrl": "http://localhost:5000/signin-auth0"
-  } 
+    "CallbackUrl": "http://localhost:3000/callback"
+  }
 }
 ```
 
@@ -78,9 +78,9 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerF
         // Set response type to code
         ResponseType = "code",
 
-        // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0 
-        // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard 
-        CallbackPath = new PathString("/signin-auth0"),
+        // Set the callback path, so Auth0 will call back to http://localhost:3000/callback
+        // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
+        CallbackPath = new PathString("/callback"),
 
         // Configure the Claims Issuer to be Auth0
         ClaimsIssuer = "Auth0"
@@ -112,7 +112,7 @@ public IActionResult Login(string returnUrl = "/")
 
 To log the user out, call the `SignOutAsync` method for both the OIDC middleware as well as the Cookie middleware.
 
-```
+```csharp
 // Controllers/AccountController.cs
 
 [Authorize]
@@ -121,7 +121,7 @@ public async Task Logout()
     await HttpContext.Authentication.SignOutAsync("Auth0", new AuthenticationProperties
     {
         // Indicate here where Auth0 should redirect the user after a logout.
-        // Note that the resulting absolute Uri must be whitelisted in the 
+        // Note that the resulting absolute Uri must be whitelisted in the
         // **Allowed Logout URLs** settings for the client.
         RedirectUri = Url.Action("Index", "Home")
     });
@@ -132,7 +132,7 @@ public async Task Logout()
 When configuring the OIDC middleware, you will have to handle the `OnRedirectToIdentityProviderForSignOut` event to redirect
 the user to the [Auth0 logout endpoint](https://auth0.com/docs/logout#log-out-a-user):
 
-```
+```csharp
 // Add the OIDC middleware
 var options = new OpenIdConnectOptions("Auth0")
 {
@@ -140,7 +140,7 @@ var options = new OpenIdConnectOptions("Auth0")
     [...],
     Events = new OpenIdConnectEvents
     {
-        // handle the logout redirection 
+        // handle the logout redirection
         OnRedirectToIdentityProviderForSignOut = (context) =>
         {
             var logoutUri = $"https://{auth0Settings.Value.Domain}/v2/logout?client_id={auth0Settings.Value.ClientId}";
@@ -173,7 +173,7 @@ app.UseOpenIdConnectAuthentication(options);
 
 When asking Auth0 to authenticate a user, you might want to provide additional parameters to the `/authorize` endpoint, such as the `connection`, `offline_access`, `audience` or others. In order to do so, you need to handle the `OnRedirectToIdentityProvider` event when configuring the `OpenIdConnectionOptions` and call the `ProtocolMessage.SetParameter` method on the supplied `RedirectContext`:
 
-```
+```csharp
 // Add the OIDC middleware
 app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions("Auth0")
 {
@@ -181,7 +181,7 @@ app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions("Auth0")
     Authority = $"https://{auth0Settings.Value.Domain}",
 
     [...], // other options
-    
+
     Events = new OpenIdConnectEvents
     {
         OnRedirectToIdentityProvider = context =>
@@ -191,7 +191,7 @@ app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions("Auth0")
 
             return Task.CompletedTask;
         }
-    }    
+    }
 });
 ```
 

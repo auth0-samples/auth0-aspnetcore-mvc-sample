@@ -2,7 +2,7 @@
 
 This example shows how to extract user profile information from claims and display the user's profile in your application.
 
-You can read a quickstart for this sample [here](https://auth0.com/docs/quickstart/webapp/aspnet-core/03-user-profile). 
+You can read a quickstart for this sample [here](https://auth0.com/docs/quickstart/webapp/aspnet-core/02-user-profile).
 
 ## Getting Started
 
@@ -16,8 +16,8 @@ Be sure to update the `appsettings.json` with your Auth0 settings:
     "Domain": "Your Auth0 domain",
     "ClientId": "Your Auth0 Client Id",
     "ClientSecret": "Your Auth0 Client Secret",
-    "CallbackUrl": "http://localhost:5000/signin-auth0"
-  } 
+    "CallbackUrl": "http://localhost:3000/callback"
+  }
 }
 ```
 

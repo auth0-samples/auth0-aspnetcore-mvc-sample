@@ -14,8 +14,8 @@ Be sure to update the `appsettings.json` with your Auth0 settings:
     "Domain": "Your Auth0 domain",
     "ClientId": "Your Auth0 Client Id",
     "ClientSecret": "Your Auth0 Client Secret",
-    "CallbackUrl": "http://localhost:5000/signin-auth0"
-  } 
+    "CallbackUrl": "http://localhost:3000/callback"
+  }
 }
 ```
 
@@ -127,7 +127,7 @@ public async Task<IActionResult> Login(LoginViewModel vm, string returnUrl = nul
             // Create claims principal
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId), 
+                new Claim(ClaimTypes.NameIdentifier, user.UserId),
                 new Claim(ClaimTypes.Name, user.FullName)
 
             }, CookieAuthenticationDefaults.AuthenticationScheme));

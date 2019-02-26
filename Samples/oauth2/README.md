@@ -1,10 +1,10 @@
 # ASP.NET Core OAuth2 Sample
 
-This sample demonstrates how you can configure the standard OAuth2 middleware to authenticate users of an ASP.NET Core MVC application using Auth0. 
+This sample demonstrates how you can configure the standard OAuth2 middleware to authenticate users of an ASP.NET Core MVC application using Auth0.
 
 ## 1. Configure your Auth0 application
 
-Go to the Auth0 Dashboard and ensure that you add the URL http://localhost:5000/signin-auth0 to your list of callback URLs
+Go to the Auth0 Dashboard and ensure that you add the URL http://localhost:3000/callback to your list of callback URLs
 
 ## 2. Add the cookie and OAuth NuGet packages
 
@@ -56,11 +56,11 @@ app.UseOAuthAuthentication(new OAuthOptions
     ClientId = auth0Settings.Value.ClientId,
     ClientSecret = auth0Settings.Value.ClientSecret,
 
-    // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0 
-    // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard 
-    CallbackPath = new PathString("/signin-auth0"),
+    // Set the callback path, so Auth0 will call back to http://localhost:3000/callback
+    // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
+    CallbackPath = new PathString("/callback"),
 
-    // Configure the Auth0 endpoints                
+    // Configure the Auth0 endpoints
     AuthorizationEndpoint = $"https://{auth0Settings.Value.Domain}/authorize",
     TokenEndpoint = $"https://{auth0Settings.Value.Domain}/oauth/token",
     UserInformationEndpoint = $"https://{auth0Settings.Value.Domain}/userinfo",
@@ -71,7 +71,7 @@ app.UseOAuthAuthentication(new OAuthOptions
 
     // Set scope to openid. See https://auth0.com/docs/scopes
     Scope = { "openid" },
-    
+
     Events = new OAuthEvents
     {
         // When creating a ticket we need to manually make the call to the User Info endpoint to retrieve the user's information,
@@ -154,7 +154,7 @@ Be sure to update the appsettings.json with your Auth0 settings:
             "domain": "Your Auth0 domain",
             "clientId": "Your Auth0 Client Id",
             "clientSecret": "Your Auth0 Client Secret"
-        } 
+        }
     }
 
 Then, restore the NuGet and Bower packages and run the application:
